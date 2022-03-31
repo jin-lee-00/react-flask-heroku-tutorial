@@ -1,13 +1,13 @@
 import os
-from flask import Flask, jsonify, request, json
+from flask import Flask, jsonify, request, json, send_from_directory
 # from flask_cors import CORS
 
-app = Flask(__name__, static_folder="client/build", static_url_path="/")
+app = Flask(__name__, static_folder="client/build", static_url_path="")
 # CORS(app)
 
 @app.route("/")
 def index():
-  return app.send_static_file("index.html")
+  return send_from_directory(app.static_folder, "index.html")
 
 @app.route("/api/<fname>", methods=["GET", "POST"])
 def getLname(fname: str):
@@ -28,7 +28,7 @@ def search():
 
 @app.errorhandler(404)
 def not_found(e):
-  return app.send_static_file("index.html")
+  return send_from_directory(app.static_folder, "index.html")
 
 if __name__ == "__main__": 
   app.run(host="0.0.0.0", debug=False, port=os.environ.get("PORT", 80))      
